@@ -64,6 +64,7 @@ CKEDITOR.plugins.add("wordcount", {
             countSpacesAsChars: false,
             countHTML: false,
             countLineBreaks: false,
+            updateOnKeyOnlyOnSourceMode: true,
             hardLimit: true,
 
             //MAXLENGTH Properties
@@ -395,9 +396,11 @@ CKEDITOR.plugins.add("wordcount", {
         }
 
         editor.on("key", function (event) {
-            if (editor.mode === "source") {
-                updateCounter(event.editor);
+            if (editor.mode !== "source" && config.updateOnKeyOnlyOnSourceMode) {
+                return;
             }
+            updateCounter(event.editor);
+          
         }, editor, null, 100);
 
         editor.on("change", function (event) {
